@@ -1,6 +1,6 @@
 # Takemikazuchi skins for Ronin (Titanfall 2 / Northstar)
 
-Eight Type-00 Takemikazuchi model's from **Project MIKHAIL**, as replacement models for **Ronin** and **Ronin Prime**.
+Eight Type-00 Takemikazuchi model's from **Project MIKHAIL**, as replacement models for **Ronin** and **Ronin Prime**. Ion client is needed for this to work.
 
 ## Download
 
