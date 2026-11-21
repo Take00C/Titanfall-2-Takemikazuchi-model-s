@@ -1,0 +1,108 @@
+{
+  "_about": [
+    "How the Takemikazuchi mesh is hung on the stock Ronin skeleton.  Hand-authored; this file is the retarget.",
+    "The skin keeps every Ronin bone.  Each Takemikazuchi joint's vertices are placed onto, and weighted to, Ronin bones.",
+    "{S} is L or R (Takemikazuchi side suffix), {s} is l or r (Ronin side infix).",
+    "block:    joints that stay one rigid piece with the torso (uniform scale, no rotation), and the Ronin bone they follow.",
+    "segments: a straight Takemikazuchi limb section (from joint -> to joint) laid along a chain of Ronin bones.",
+    "          stretch = axial   : lengthened or shortened along its axis so both ends meet Ronin's joints",
+    "                    uniform : scaled evenly (up to max_scale) so the far end approaches Ronin's joint",
+    "                    none    : plain scale, far end left where it falls",
+    "          align = false     : keep the section's own orientation instead of turning it onto the Ronin bone",
+    "          joints            : which Takemikazuchi joints ride this section; a bone name pins their vertices to that",
+    "                              bone, null weights them by where they fall along the Ronin chain"
+  ],
+  "_legs": [
+    "Ronin's leg has three bones in a zig-zag (thigh, thighLow, knee); the Takemikazuchi's is a straight thigh and shin.",
+    "The legs are NOT folded along Ronin's bones.  They stay exactly as the Takemikazuchi has them - straight, under its",
+    "own hips, part of the rigid block - and are only weighted to Ronin's leg bones by height (see 'banded').  Standing,",
+    "the leg is straight; when Ronin's leg folds, it flexes softly around the two heights where Ronin's joints are."
+  ],
+  "size": {
+    "_about": [
+      "The user's rule (2026-11-15): 'Just use the Project MIKHAIL model how it is but scale it up so it's the same size as",
+      "the Ronin.'  So the body is ONE rigid, evenly scaled copy of the model - head, chest, shoulder armour, hips, legs,",
+      "feet, jump units and mounts keep their sculpted places - and the scale is not a hand-picked number: it is Ronin's",
+      "overall height divided by the Takemikazuchi's (antenna included), about 11.54 units per metre.",
+      "Only the arms, from the shoulder joint down, leave the rigid body: they are laid along Ronin's arm bones, because",
+      "they have to swing at Ronin's joints and the hands have to reach Ronin's weapons.",
+      "History: 11.09 (shoulders on Ronin's joints) read as too small; 12% bigger with the arms and shoulder armour left",
+      "behind at Ronin's joint height was rejected at once ('Why did you move the chest up', 'It looks fat now').  Do not",
+      "move or resize parts of the body relative to each other."
+    ],
+    "rule": "same_height_as_ronin"
+  },
+  "anchor": {
+    "_about": "lined up front-to-back and side-to-side at the shoulders; vertically the soles stand on Ronin's ground",
+    "tsf": ["Shoulder_L", "Shoulder_R"], "ronin": ["def_l_shoulder", "def_r_shoulder"]
+  },
+  "stay_in_place": {
+    "_about": [
+      "Parts that must end up where a plain scaled copy of the model has them, relative to each other.  The build stops if the",
+      "centre of any of them is further than max_shift_units from that place.  (Only the arms from the shoulder joint down",
+      "are re-posed, onto Ronin's arm bones; everything else is listed here.)"
+    ],
+    "joints": "^(Main_JT|Root_M|Spine\\d_M|Chest_M|Neck_M|Head_M|Hip_Unit.*|Hip_[LR]|Knee_[LR]|Ankle_[LR]|Toes_[LR]|Scapula_[LR]|Shoulder_Guard1_[LR]|Bm_.*|Gm_.*|target_Gm_.*|pis_.*|[LR]_Bm_grip_[LR]|[LR]_grip_[LR])$",
+    "max_shift_units": 0.5
+  },
+  "blend_half_width": 5.0,
+  "block": [
+    ["^(Main_JT|Root_M)$", "def_c_hip"],
+    ["^(Scapula|Shoulder_Guard1)_L$", "def_l_clav"], ["^(Scapula|Shoulder_Guard1)_R$", "def_r_clav"],
+    ["^Hip_Unit", "def_c_hip"],
+    ["^Ankle_L$", "def_l_ankle"], ["^Ankle_R$", "def_r_ankle"],
+    ["^Toes_L$", "def_l_ball"], ["^Toes_R$", "def_r_ball"],
+    ["^Spine1_M$", "def_c_spineA"],
+    ["^Spine3_M$", "def_c_spineB"],
+    ["^(Chest_M|Neck_M|Head_M)$", "def_c_spineC"],
+    ["^(Bm_|Gm_|target_Gm_|pis_|[LR]_Bm_grip|[LR]_grip)", "def_c_spineC"]
+  ],
+  "left_out": {
+    "_about": [
+      "Pieces of the model that are not put on the body, at the owner's request (2026-11-15: 'can you remove those small",
+      "blades in the hand? They look off').  Knife_L / Knife_R each carry one separate piece and nothing else: the",
+      "forearm blade, 3.6 m long and 8 cm thin, which the model has run out past the fingertips.  Every triangle that",
+      "follows a listed joint is dropped; the forearm it slides out of is a different piece and is untouched."
+    ],
+    "joints": ["Knife_L", "Knife_R"]
+  },
+  "segments": [
+    {"name": "upper_arm", "tsf": ["Shoulder_{S}", "Elbow_{S}"], "ronin": ["def_{s}_shoulder", "def_{s}_elbow"],
+     "stretch": "axial", "joints": {"Shoulder_{S}": null},
+     "fittings_stay_with_body": {
+       "_about": [
+         "The upper-arm joint also carries the shoulder fittings that sit tucked under the shoulder armour (the pod with",
+         "the fin, its mounting bar and bolts, the link to the collar).  They are separate pieces of mesh that end well",
+         "above the elbow.  Any connected piece on this joint that ends before this fraction of the way from shoulder to",
+         "elbow stays where the model has it, as part of the rigid body, and follows the same bone as the shoulder armour;",
+         "only the arm itself goes onto Ronin's arm bones.  Without this the pod hangs 9 units low and a gap opens under",
+         "the armour (found by review, 2026-11-15)."
+       ],
+       "end_before": 0.65, "bone": "def_{s}_clav"}},
+    {"name": "forearm", "tsf": ["Elbow_{S}", "Wrist_{S}"], "ronin": ["def_{s}_elbow", "def_{s}_wrist"],
+     "stretch": "axial", "joints": {"Elbow_{S}": null, "Knife_{S}": "def_{s}_elbow"}},
+    {"name": "hand", "tsf": ["Wrist_{S}", "MiddleFinger1_{S}"], "ronin": ["def_{s}_wrist", "def_{s}_finMidA"],
+     "stretch": "uniform", "max_scale": 1.6,
+     "joints": {
+       "Wrist_{S}": "def_{s}_wrist", "Wrist1_{S}": "def_{s}_wrist",
+       "ThumbFinger1_{S}": "def_{s}_finThumbA", "ThumbFinger2_{S}": "def_{s}_finThumbB", "ThumbFinger3_{S}": "def_{s}_finThumbC",
+       "IndexFinger1_{S}": "def_{s}_finIndexA", "IndexFinger2_{S}": "def_{s}_finIndexB", "IndexFinger3_{S}": "def_{s}_finIndexC",
+       "MiddleFinger1_{S}": "def_{s}_finMidA", "MiddleFinger2_{S}": "def_{s}_finMidB", "MiddleFinger3_{S}": "def_{s}_finMidC",
+       "RingFinger1_{S}": "def_{s}_finRingA", "RingFinger2_{S}": "def_{s}_finRingB", "RingFinger3_{S}": "def_{s}_finRingC",
+       "PinkyFinger1_{S}": "def_{s}_finRingA", "PinkyFinger2_{S}": "def_{s}_finRingB", "PinkyFinger3_{S}": "def_{s}_finRingC"}}
+  ],
+  "banded": [
+    {"name": "leg", "joints": ["Hip_{S}", "Knee_{S}"],
+     "_about": "placed with the rigid block; weighted by height to these bones, changing over at the heights of the named Ronin joints",
+     "bones": ["def_{s}_thigh", "def_{s}_thighLow", "def_{s}_knee"],
+     "change_at_height_of": ["def_{s}_thighLow", "def_{s}_knee"],
+     "blend_half_width": 9.0}
+  ],
+  "bodygroups": {
+    "_about": "Ronin hides or swaps these groups for damage states; each bone's vertices go to its group",
+    "left_arm": "def_l_shoulder", "right_arm": "def_r_shoulder",
+    "left_leg": "def_l_thigh", "right_leg": "def_r_thigh",
+    "hip": ["def_c_hip", "def_l_hip", "def_r_hip", "jx_c_delta"]
+  },
+  "placeholder_material": "models\\titans_r2\\light_ronin\\warpaint\\warpaint_02\\t_l_ronin_warpaint_skin02"
+}

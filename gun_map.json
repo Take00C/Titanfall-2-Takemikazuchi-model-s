@@ -1,0 +1,78 @@
+{
+  "_about": [
+    "How the Takemikazuchi's Type-87 assault cannon (Project MIKHAIL equip/weapon/gun87_00) sits in the two files of",
+    "Ronin's Leadwall (the game calls the model titan_triple_threat).  Hand-authored; this file is the whole fit.",
+    "The gun is used as it is: one rigid copy at the body's scale.  It is not a shotgun and Ronin's hands were posed",
+    "for the Leadwall, so the support hand will not rest on it - this is here to be looked at in game, and is its own",
+    "pair of files in the mod so it can be left out (GUN_UNIT empty)."
+  ],
+  "size": {
+    "_about": [
+      "At the body's own scale the gun came out 82 units long and 6 thick and read as a toy in Ronin's hands (owner,",
+      "2026-11-15: 'the assault gun is waaay too small. Perhaps that's its normal size but for this game it doesn't work').",
+      "The reason is the hands: Ronin's are 1.6 times the size of the Takemikazuchi's own (the fit scales the hands up to",
+      "Ronin's hand bones), and a gun is judged against the hand that holds it.",
+      "rule 'in_proportion_to_the_gun_hand': body scale x the hand's enlargement, read from the fit - the gun is to Ronin's",
+      "hand what it is to the Takemikazuchi's.  Other rules: 'body_scale' (as the sword), or 'times_body_scale' with a 'value'."
+    ],
+    "rule": "in_proportion_to_the_gun_hand"
+  },
+  "grip": {
+    "_about": [
+      "Project MIKHAIL holds the gun at its 'equip' marker, the model's own origin, at the top of the grip under the",
+      "gun's body.  The Leadwall files have Ronin's gun hand at their origin, likewise at the top of the grip."
+    ],
+    "tsf_marker": "equip", "ronin": [0.0, 0.0, 0.0]
+  },
+  "axes": {
+    "_about": [
+      "Leadwall: barrel along +Z (muzzle bone at z = 98.7), up +Y, the titan's left +X.",
+      "Type-87 as cleaned: barrels along -Z (36 mm muzzle marker at z = -3.64 m), thickness X, and the grip on the +Y side,",
+      "so -Y is up.  Checked against Project MIKHAIL's own artwork of the Takemikazuchi holding it: the hand is under",
+      "the gun, the box magazine stands on top, the short 120 mm barrel sits above the long 36 mm one.",
+      "So the gun is turned half a turn about its thickness axis, like the sword: (x, y, z) -> (x, -y, -z).",
+      "Rows are the Leadwall's X, Y, Z."
+    ],
+    "ronin_from_tsf": [[1, 0, 0], [0, -1, 0], [0, 0, -1]]
+  },
+  "checks": {
+    "_about": [
+      "the build stops unless the long barrel's muzzle ends up ahead of the hand, the short barrel above the long one,",
+      "and the bulk of the gun above the hand"
+    ],
+    "muzzle_marker": "barrel36mm", "upper_barrel_marker": "barrel120mm", "forward_axis": "z", "up_axis": "y"
+  },
+  "points": {
+    "_about": [
+      "Two named points in each Leadwall file say where effects appear; they are moved onto the new gun (display only).",
+      "muzzle_flash: flash and tracers - onto the 36 mm muzzle marker.",
+      "shell: ejected cases - Project MIKHAIL has no marker for it; placed by hand on the gun's right side just behind",
+      "the root of the 36 mm barrel (metres in the cleaned gun's own frame)."
+    ],
+    "muzzle_flash": {"tsf_marker": "barrel36mm"},
+    "shell": {"tsf_point_m": [-0.30, -0.53, -1.40]}
+  },
+  "mesh_bone": {
+    "_about": "the bone that carries the gun body in each stock file",
+    "w_titan_triple_threat": "def_c_base", "atpov_titan_triple_threat": "def_c_base"
+  },
+  "other_parts": {
+    "_about": [
+      "The Leadwall's separate pieces (its magazine, an optic) are switched on and off by the game during reloads.",
+      "The Type-87 has no such separate pieces, so each becomes a speck on the bone that carried it."
+    ],
+    "triple_threat_magazine": "def_detail_2", "attachment1": "def_c_attachment1"
+  },
+  "first_person_magazine": {
+    "_about": [
+      "For the reload seen from the cockpit (data/reload_map.json, GUN_RELOAD) the Type-87's box magazine is taken out of",
+      "the first-person file's gun mesh and becomes that file's magazine piece (the part the game hides and shows during",
+      "a reload), on its own bone.  Which pieces: every separate piece of the mesh that lies wholly inside this box,",
+      "in metres in the cleaned gun's own frame - the curved box and its end cap, not the collar on the gun it slots into",
+      "(checked in build/renders/retarget/gun_pieces.png).  The world model keeps the gun whole."
+    ],
+    "file": "atpov_titan_triple_threat", "part": "triple_threat_magazine",
+    "pieces_inside_m": {"x": [-0.15, 0.15], "y": [-2.76, -1.13], "z": [-1.47, -0.38]},
+    "expect_pieces": 2
+  }
+}

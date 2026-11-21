@@ -1,0 +1,108 @@
+{
+  "_about": [
+    "The reload of the Type-87 as the pilot sees it (first-person gun file atpov_titan_triple_threat).",
+    "Ronin's own reload (the Leadwall's) feeds a drum in at the gun's left side; the Type-87's box magazine stands on top",
+    "of the gun, out of the left hand's reach.  So, while the stock timing and sounds stay frame for frame:",
+    "the gun cants over towards the pilot and comes a little towards the middle; the left hand takes the old magazine by",
+    "its top, pulls it up out of the well and carries it away out of view, where the game hides it (frame 22) and shows",
+    "the new one (frame 31) in the same hand; the hand carries it over the well and pushes it in (seated by frame 42,",
+    "before the large rumble at 43), lets go and returns to the stock motion, and the gun returns onto its stock",
+    "motion.  The right hand keeps its stock hold of the grip.",
+    "Frames are those of the full reload (76 frames at 30 per second); the two 'late' animations the game resumes",
+    "from are frames 26-75 and 58-75 of it, and the empty-magazine versions are the same motion."
+  ],
+  "files": {
+    "anim_at_reload_seq.smd": 0, "anim_reload_late1_anim.smd": 26, "anim_reload_late2_anim.smd": 58,
+    "anim_at_reload_empty_seq.smd": 0, "anim_reload_empty_late1_anim.smd": 26, "anim_reload_empty_late2_anim.smd": 58
+  },
+  "events": {
+    "_about": [
+      "Ronin's reload hides its magazine piece at frame 10, before a hand could take it (owner, 2026-11-16: 'the hand",
+      "does not grab the mag and take it').  That event only switches the magazine piece of the first-person gun off",
+      "and on; it is moved to when the hand has carried the old magazine out of view.  The late reloads, the",
+      "milestones, the ammo refill and the sounds are not touched."
+    ],
+    "retime": [
+      {"sequence": "reload_seq", "file": "anim_at_reload_seq.smd", "event": "AE_WPN_CLIPBODYGROUP_HIDE", "from": 10, "to": 22},
+      {"sequence": "reload_empty_seq", "file": "anim_at_reload_empty_seq.smd", "event": "AE_WPN_CLIPBODYGROUP_HIDE", "from": 10, "to": 22}
+    ]
+  },
+  "magazine_bone": {
+    "_about": [
+      "The Type-87's magazine (its two box pieces) rides def_detail_3, a child of the gun that no animation but the",
+      "reloads moves, so it stays on the gun everywhere else.  (The Leadwall's own magazine bone turns its drum by up",
+      "to 80 degrees on every shot.)  Its stored range is widened for the reloads, the only animations that move it."
+    ],
+    "bone": "def_detail_3", "rotscale": [9.58739e-05, 4.79415e-05, 9.58739e-05], "posscale": 0.00390636921
+  },
+  "magazine": {
+    "_about": [
+      "The magazine's motion relative to its seat on the gun, about its own centre, in the gun's frame",
+      "(x the gun's left, y up, z forward; game units and degrees, turn applied about z, then y, then x).",
+      "Between two keys the motion eases in and out.  The left hand holds it from frame 'hold_from' to 'hold_until'",
+      "(left_hand below), so these keys are also the hand's path.  Frames 22-30 the game hides it: the old magazine",
+      "is swapped for the new one out of view."
+    ],
+    "keys": [
+      {"frame": 10, "move": [0, 0, 0], "turn": [0, 0, 0]},
+      {"frame": 15, "move": [14, 16, -4], "turn": [0, 0, -10]},
+      {"frame": 22, "move": [50, -45, -15], "turn": [0, 0, -25]},
+      {"frame": 31, "move": [50, -45, -15], "turn": [0, 0, -25]},
+      {"frame": 38, "move": [0, 22, 0], "turn": [0, 0, 0]},
+      {"frame": 42, "move": [0, 0, 0], "turn": [0, 0, 0]}
+    ]
+  },
+  "gun": {
+    "_about": [
+      "Added to the stock gun motion: a roll about the gun's own barrel (negative = the top towards the pilot's left)",
+      "and a shift in the pilot's view (left, forward, up), in game units."
+    ],
+    "keys": [
+      {"frame": 0, "roll": 0, "move": [0, 0, 0]},
+      {"frame": 8, "roll": -15, "move": [16, 8, -30]},
+      {"frame": 20, "roll": -15, "move": [16, 8, -30]},
+      {"frame": 32, "roll": -15, "move": [16, 8, -18]},
+      {"frame": 46, "roll": -15, "move": [16, 8, -18]},
+      {"frame": 58, "roll": 0, "move": [0, 0, 0]}
+    ]
+  },
+  "left_hand": {
+    "_about": [
+      "The left hand is stock until 'stock_until', eases onto the seated magazine by 'hold_from', holds it by its top",
+      "(palm on the top cap, fingers pointing forward along it) until 'hold_until', lifts off by 'lift' (gun frame)",
+      "and eases back onto the stock motion by 'stock_again_from'.  'closed_hand_frame' is a stock reload frame in",
+      "which the stock left hand is closed, used to tell which side of the hand is the palm."
+    ],
+    "_release": "after letting go the hand drops out of view to where the stock hand is at frame 'stock_again_from' (reached by 'released_by'), waits there, and follows the stock motion from that frame",
+    "stock_until": 0, "hold_from": 9, "hold_until": 44, "released_by": 54, "stock_again_from": 64,
+    "lift": [3, 8, 0], "fingers": [-0.6, 0, 0.8], "palm_faces": [0, -1, 0], "closed_hand_frame": 38,
+    "_elbow": "the elbow is kept as near as the arm allows to where the stock animation has it, moved by 'elbow_shift' (left, forward, up)",
+    "elbow_shift": [0, 0, -40],
+    "grip": {
+      "_about": [
+        "How the hand holds the magazine (owner, 2026-11-16: 'make sure he's actually holding it ... holding the mag",
+        "basically and putting in a new one'): like a book taken off a shelf by its top.  The palm lies flat on the",
+        "magazine's left side ('palm_faces', gun frame), the knuckles run along the straight part of its top edge",
+        "('knuckles_along_edge' = where along it, 0 rear .. 1 front; 'knuckles_above_edge' units above it), and every",
+        "finger is bent at its own joints, about 'curl_axis' (the joint's own axes), one degree at a time until it",
+        "would come within 'clearance' of the magazine, at most 'most_bend_degrees'.  The thumb is closed the way",
+        "the stock animation closes it, from 'thumb_open_degrees' open until it touches.  Only joints turn: the hand",
+        "is not moved or resized.  The fingers close into this grip over 'close_frames' as the hand arrives and open",
+        "over 'open_frames' as it lets go; between, they hold it, the old magazine out and the new one in."
+      ],
+      "palm_faces": [-1, 0, 0],
+      "knuckles_along_edge": 0.5,
+      "knuckles_above_edge": 4.5,
+      "curl_axis": [0, 0, -1],
+      "clearance": 0.25,
+      "most_bend_degrees": 110,
+      "thumb_open_degrees": 90,
+      "thumb_opens_by_degrees": 30,
+      "thumb_swing": {"_about": "the thumb swung out in the palm's plane first (about the palm's normal, wrist frame), towards the magazine's rear edge", "axis_in_wrist": [0, -1, 0], "degrees": 45},
+      "close_frames": [7, 9],
+      "open_frames": [44, 47],
+      "_approach": "the hand comes in onto the magazine from this far off (gun frame: left, up, forward), fingers open, and closes them as it arrives; when it lets go it opens them first and then moves off ('lift', then away)",
+      "approach_from": [8, 4, 0]
+    }
+  }
+}

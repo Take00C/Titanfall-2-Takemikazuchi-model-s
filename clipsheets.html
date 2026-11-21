@@ -1,0 +1,85 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Clip sheets</title>
+<style>body{background:#111;color:#ddd;font:13px monospace;margin:12px} video{width:480px} pre{white-space:pre-wrap}</style>
+</head><body>
+<div>clip sheets (served by tools/clipserver.ps1)</div>
+<pre id="log"></pre>
+<script>
+// ?mode=probe                 -> what the browser can decode, the clip's size and length
+// ?mode=sheets&prefix=o&step=1&per=12[&from=0][&to=end][&cw=640][&ch=360][&cols=4]
+//                             -> sheet N holds frames t = from + (N-1)*per*step + k*step, k = 0..per-1
+window.__state = { done: false, error: null, saved: 0, total: 0 };
+const q = new URLSearchParams(location.search);
+const out = document.getElementById('log');
+async function log(msg) {
+  out.textContent += msg + '\n';
+  try { await fetch('/log', { method: 'POST', body: msg }); } catch (e) {}
+}
+function seek(v, t) {
+  return new Promise((res, rej) => {
+    const timer = setTimeout(() => rej(new Error('seek timeout at ' + t)), 30000);
+    v.onseeked = () => { clearTimeout(timer); res(); };
+    v.currentTime = t;
+  });
+}
+function save(canvas, name) {
+  return new Promise((res, rej) => canvas.toBlob(async b => {
+    try { const r = await fetch('/save?name=' + encodeURIComponent(name), { method: 'POST', body: b }); res(r.status); }
+    catch (e) { rej(e); }
+  }, 'image/jpeg', 0.85));
+}
+(async () => {
+  try {
+    const mode = q.get('mode') || 'probe';
+    const types = ['video/mp4; codecs="hvc1.1.6.L153.B0"', 'video/mp4; codecs="hev1.1.6.L153.B0"', 'video/mp4; codecs="avc1.640033"'];
+    await log('mode ' + mode + '; canPlayType: ' + types.map(t => t.split('"')[1] + '=' + (document.createElement('video').canPlayType(t) || 'no')).join(', '));
+    const v = document.createElement('video');
+    v.muted = true; v.preload = 'auto'; v.src = '/clip.mp4';
+    document.body.appendChild(v);
+    await new Promise((res, rej) => { v.onloadedmetadata = res; v.onerror = () => rej(new Error('video error ' + (v.error ? v.error.code + ' ' + v.error.message : '?'))); });
+    await log('duration ' + v.duration.toFixed(2) + ' s, ' + v.videoWidth + 'x' + v.videoHeight);
+    if (mode === 'probe') {
+      await seek(v, Math.min(10, v.duration / 2));
+      const c = document.createElement('canvas'); c.width = 640; c.height = 360;
+      c.getContext('2d').drawImage(v, 0, 0, 640, 360);
+      await log('probe frame saved: ' + await save(c, 'probe.jpg'));
+      window.__state.done = true; return;
+    }
+    const prefix = q.get('prefix') || 'o';
+    const step = parseFloat(q.get('step') || '1');
+    const per = parseInt(q.get('per') || '12');
+    const from = parseFloat(q.get('from') || '0');
+    const to = Math.min(parseFloat(q.get('to') || String(v.duration)), v.duration - 0.05);
+    const cw = parseInt(q.get('cw') || '640'), ch = parseInt(q.get('ch') || '360'), cols = parseInt(q.get('cols') || '4');
+    const rows = Math.ceil(per / cols);
+    const span = per * step;
+    const sheets = Math.ceil((to - from) / span);
+    window.__state.total = sheets;
+    const c = document.createElement('canvas'); c.width = cw * cols; c.height = ch * rows;
+    const g = c.getContext('2d');
+    g.font = 'bold 22px monospace';
+    for (let n = 1; n <= sheets; n++) {
+      g.fillStyle = '#000'; g.fillRect(0, 0, c.width, c.height);
+      for (let k = 0; k < per; k++) {
+        const t = from + (n - 1) * span + k * step;
+        if (t > to) break;
+        await seek(v, t);
+        const x = (k % cols) * cw, y = Math.floor(k / cols) * ch;
+        g.drawImage(v, x, y, cw, ch);
+        const label = 't=' + t.toFixed(2) + '  #' + k;
+        g.fillStyle = 'rgba(0,0,0,0.65)'; g.fillRect(x, y, 14 * label.length + 12, 30);
+        g.fillStyle = '#ff0'; g.fillText(label, x + 6, y + 22);
+      }
+      const name = prefix + '_' + String(n).padStart(3, '0') + '.jpg';
+      await save(c, name);
+      window.__state.saved = n;
+    }
+    await log('done: ' + sheets + ' sheets ' + prefix + '_001..' + String(sheets).padStart(3, '0'));
+    window.__state.done = true;
+  } catch (e) {
+    window.__state.error = String(e);
+    await log('ERROR ' + e);
+  }
+})();
+</script>
+</body></html>

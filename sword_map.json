@@ -1,0 +1,31 @@
+{
+  "_about": [
+    "How the Takemikazuchi's Type-74 blade (Project MIKHAIL equip/weapon/bl74_00) sits in Ronin's sword files.",
+    "Hand-authored; this file is the whole fit.  The blade is used as it is: one rigid copy, at the same scale as the body",
+    "(units per metre are read from the body's fit), so sword and machine keep Project MIKHAIL's proportions."
+  ],
+  "grip": {
+    "_about": [
+      "Project MIKHAIL attaches the blade to the hand at its 'equip' marker, which is the model's own origin, on the black",
+      "handle.  Ronin's sword files have the hand at their origin too (the weapon bone).  So origin goes on origin."
+    ],
+    "tsf_marker": "equip", "ronin": [0.0, 0.0, 0.0]
+  },
+  "axes": {
+    "_about": [
+      "Ronin's sword: blade along +Y (tip bone at y = 148.9), cutting edge towards +Z (edge bone at z = +9.0), thickness X.",
+      "Type-74 as cleaned: blade along -Y (tip marker 'blade2' at y = -12.2 m), belly and cutting edge towards -Z, thickness X.",
+      "So the blade is turned half a turn about its thickness axis: (x, y, z) -> (x, -y, -z).  Rows are Ronin's X, Y, Z."
+    ],
+    "ronin_from_tsf": [[1, 0, 0], [0, -1, 0], [0, 0, -1]]
+  },
+  "checks": {
+    "_about": "the build stops if the fitted blade's tip is further than this from Ronin's own tip bone along the blade, or points the wrong way",
+    "tip_marker": "blade2", "ronin_tip_bone": "sword_tip", "max_tip_shortfall_units": 15.0
+  },
+  "mesh_bone": {
+    "_about": "the bone that carries the whole sword mesh in each stock file (read from the file, checked against this)",
+    "w_titan_sword": "def_magazine", "w_titan_sword_prime": "def_magazine",
+    "atpov_titan_sword": "weapon_bone", "atpov_titan_sword_prime": "weapon_bone"
+  }
+}

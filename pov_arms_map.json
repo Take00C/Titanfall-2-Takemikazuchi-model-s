@@ -1,0 +1,38 @@
+{
+ "_about": [
+  "How the Takemikazuchi's arms are put on Ronin's first-person arm files (what the pilot sees from the cockpit):",
+  "models/weapons/arms/pov_titan_light_locust.mdl and pov_titan_light_ronin_prime.mdl.",
+  "The arms are the approved body fit's own arm triangles (level 0), not a second fit.",
+  "Hands: Ronin's first-person rig has its wrist and finger joints exactly where the body rig has them",
+  "(within 0.02 unit), so every hand and finger vertex keeps its place on its bone: the cockpit hand is the",
+  "body's hand, vertex for vertex.",
+  "Upper arm and forearm: the first-person rig's elbow sits 8.6 units nearer the wrist and its shoulder joint",
+  "5.7 units further out than on the body (Ronin's own first-person arms are built that way).  Each section is",
+  "therefore laid between the first-person joints the same way the body fit lays it between the body's joints:",
+  "length along the bone follows the joints, thickness is untouched."
+ ],
+ "take_groups": ["left_arm", "right_arm"],
+ "between_the_joints": {
+  "def_l_shoulder": "def_l_elbow",
+  "def_l_elbow": "def_l_wrist",
+  "def_r_shoulder": "def_r_elbow",
+  "def_r_elbow": "def_r_wrist"
+ },
+ "same_place_on_its_bone": "every other bone (wrist and fingers)",
+ "finger_joints": {
+  "_about": [
+   "Which of Ronin's finger joints turns each finger piece.  The Takemikazuchi's hand is smaller than Ronin's,",
+   "so the knuckle of a finger piece (its inner end) is not at the Ronin joint the body fit hangs it on, and a",
+   "curled finger comes apart.  Each piece is turned by the joint of the same finger that sits at its inner end",
+   "(within this many units); a piece with no joint there stays rigid with the piece it grows from.",
+   "Nothing is moved or resized; the hand at rest is the body's hand.  rule: 'as_on_the_body' keeps the body",
+   "fit's joints instead."
+  ],
+  "rule": "joint_at_the_inner_end",
+  "joint_within_units_of_the_inner_end": 3.5
+ },
+ "checks": {
+  "_about": "the build stops if a hand vertex would move by more than this many units against the body fit",
+  "hand_may_move_units": 0.05
+ }
+}

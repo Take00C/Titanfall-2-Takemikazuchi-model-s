@@ -1,0 +1,22 @@
+{
+  "_about": [
+    "The named points ('attachments') of Ronin's body file that this skin moves.  Hand-authored.",
+    "They only decide where the game draws something that hangs on the titan; every other point, and everything",
+    "else that is not mesh, stays exactly as in the stock file (the build checks this point by point)."
+  ],
+  "stowed_sword": {
+    "_about": [
+      "Where the sword is drawn while it is put away.  Ronin hangs it on a point at the left of its rear hull; the",
+      "Takemikazuchi carries it in the blade holder on its back.  Project MIKHAIL's model has a point on each holder",
+      "where that game lays a stowed weapon (Bm_mount_L / Bm_mount_R for blades, Gm_mount_L / Gm_mount_R for guns).",
+      "The sword's own grip marker is laid on the right blade holder's point, with no adjustment: grip up above the",
+      "shoulder, blade straight down through the clamp, edge to the rear - the pose in the game's own artwork.",
+      "(The same marker on the left holder's point stands the blade upward; that game mirrors the left side.)",
+      "carried_along: Ronin keeps two more points on the stowed sword, at its tip and edge, used for effects; they",
+      "move with it.  Each is the named in-hand point carried onto the holster."
+    ],
+    "point": "SIDEARM_HOLSTER",
+    "holder": "Bm_mount_R",
+    "carried_along": {"sword_tip_side": "sword_tip", "sword_edge_side": "sword_edge"}
+  }
+}
