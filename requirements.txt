@@ -1,0 +1,6 @@
+# Python 3.11+ (the build creates .venv from this file)
+numpy>=1.24
+Pillow>=10.0
+zstandard>=0.21
+# the toolkit's own requirements.txt asks for >=1.0.7, which PyPI does not have; 1.0.6 is the newest
+texture2ddecoder>=1.0.5

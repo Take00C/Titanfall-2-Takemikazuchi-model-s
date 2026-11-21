@@ -1,0 +1,8 @@
+# Everything under build/ is regenerated from the two installed games.
+# Extracted game assets and the archive keystream must never be committed or shipped.
+build/
+.venv/
+__pycache__/
+*.pyc
+config.local.json
+decryptKey.bin
