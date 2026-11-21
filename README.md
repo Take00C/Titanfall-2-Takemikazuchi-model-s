@@ -1,16 +1,37 @@
-# research/
+# Takemikazuchi skins for Ronin (Titanfall 2 / Northstar)
 
-Scripts written during the feasibility study (2026-11-14). They are **not yet wired
-into `build.py`**; the Titanfall 2 side of the pipeline (stage 3 onward) will be built
-from them after review.
+Eight Type-00 Takemikazuchi model's from **Project MIKHAIL**, as replacement models for **Ronin** and **Ronin Prime**.
 
-| file | what it does | status |
-|---|---|---|
-| `tf2/tf2lzham_py.py` | Pure-Python LZHAM decompressor with Titanfall 2's parameters (dictionary 2^20). A port made by reading the C++ in [pg9182/tf2lzham](https://github.com/pg9182/tf2lzham) (MIT, © 2022 pg9182), which wraps Rich Geldreich's LZHAM alpha (MIT). | Verified: 26 models and 1,019 scripts extracted from the retail VPKs matched the CRC32 stored in the VPK directory. Slow (pure Python) but needs no binary. |
-| `tf2/vpk_extract.py` | Reads a Respawn `englishclient_*_dir.vpk` index and extracts matching entries, read-only. `python vpk_extract.py <dir.vpk> <outdir> <regex> ...` | Verified as above. |
-| `tf2/mdlinfo.py` | Structural dump of a studio v53 `.mdl` to JSON: bones, attachments, hitbox sets, bodygroups, materials, skin families, IK chains, include models, sequences, keyvalues. `python mdlinfo.py <outdir> <file.mdl> ...` | Used to produce the stock Ronin facts in the plan. Own implementation, not cross-checked against another parser yet. |
-| `tf2/rpak7_list.py` | Lists the assets in an uncompressed RPak v7 (the format RePak writes for Titanfall 2). | Parsed three local paks exactly to end of file. |
-| `tf2/rpak7_guids.py` | Port of the RTech asset-GUID hash; shows that an `.mdl` material name `X` resolves to the rpak asset `material/X_skn.rpak`. | Matched every material in Northstar's own custom models. |
+## Download
 
-The structure dumps of the stock Ronin models that these produced are under
-`build/ronin/mdlinfo/` (regenerable, not committed).
+Get the zips from the [Releases page](../../releases/latest):
+
+| Skin | Zip |
+|---|---|
+| Type-00R (Blue) | `TSFRonin.Takemikazuchi.zip` |
+| Type-00R (Purple) | `TSFRonin.Takemikazuchi.R_Purple.zip` |
+| Type-00F (UN) | `TSFRonin.Takemikazuchi.F_Blue.zip` |
+| Type-00F (Red) | `TSFRonin.Takemikazuchi.F_Red.zip` |
+| Type-00F (Yellow) | `TSFRonin.Takemikazuchi.F_Yellow.zip` |
+| Type-00A (white) | `TSFRonin.Takemikazuchi.A.zip` |
+| Type-00C | `TSFRonin.Takemikazuchi.C.zip` |
+| Type-00C (UN) | `TSFRonin.Takemikazuchi.C_Blue.zip` |
+
+`Takemikazuchi-Ronin-All-Skins.zip` holds all eight. You do not need Project MIKHAIL to use them.
+
+## Install
+
+1. Unzip so the skin's folder sits in `Titanfall2\R2Northstar\mods\`.
+2. Start Northstar and tick the skin in the **Mods** menu.
+
+All the skins replace Ronin, so **only one can be on at a time**. Untick the old one before ticking another, then
+restart the game. Reloading mods from the menu after switching skins can crash the game.
+
+## Report a problem
+
+Use the [Issues tab](../../issues/new/choose). Say which skin, what looks wrong, and attach a screenshot.
+
+## Building from source
+
+The scripts and data that make the skins are in this repository (no models or archive key). Building needs both games:
+`python build.py` (Python 3.11+). `python build.py --list` shows the stages. Paths are set in `tsfronin/config.py`.
