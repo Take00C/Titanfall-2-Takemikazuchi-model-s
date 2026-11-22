@@ -37,8 +37,3 @@ restart the game. Reloading mods from the menu after switching skins can crash t
 ## Report a problem
 
 Use the [Issues tab](../../issues/new/choose). Say which skin, what looks wrong, and attach a screenshot.
-
-## Building from source
-
-The scripts and data that make the skins are in this repository (no models or archive key). Building needs both games:
-`python build.py` (Python 3.11+). `python build.py --list` shows the stages. Paths are set in `tsfronin/config.py`.
